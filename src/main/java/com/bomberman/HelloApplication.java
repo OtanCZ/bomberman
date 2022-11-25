@@ -1,4 +1,4 @@
-package com.bomberman.bomberman;
+package com.bomberman;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

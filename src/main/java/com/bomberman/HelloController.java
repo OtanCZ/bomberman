@@ -1,4 +1,4 @@
-package com.bomberman.bomberman;
+package com.bomberman;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
