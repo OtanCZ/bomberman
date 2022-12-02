@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:controller="com.bomberman.controllers.SettingsController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Button fx:id="mainMenuButton" mnemonicParsing="false" onMouseClicked="#mainMenuButtonOnClick" text="SceneTestWorking" />
+      <Label text="Settings" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="250.0"  AnchorPane.topAnchor="25.0" />
+   </children>
+</AnchorPane>

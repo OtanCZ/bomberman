@@ -5,4 +5,6 @@ module com.bomberman.bomberman {
 
     opens com.bomberman to javafx.fxml;
     exports com.bomberman;
+    exports com.bomberman.controllers;
+    opens com.bomberman.controllers to javafx.fxml;
 }
