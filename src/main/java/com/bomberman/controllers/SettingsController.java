@@ -9,6 +9,10 @@ import javafx.scene.input.MouseEvent;
 public class SettingsController {
 
     public Button mainMenuButton;
+    @FXML
+    public void initialize() {
+        System.out.println("SettingsController initialized!");
+    }
 
     public void mainMenuButtonOnClick(MouseEvent mouseEvent) throws Exception {
         BombermanApplication.stageManager.showScene(SceneEntity.MAIN_MENU);

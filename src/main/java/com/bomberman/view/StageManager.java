@@ -5,6 +5,7 @@ import javafx.stage.Stage;
 
 public class StageManager {
     private Stage stage;
+    private SceneEntity currentScene;
 
     public StageManager(Stage stage) {
         this.stage = stage;
@@ -17,7 +18,24 @@ public class StageManager {
 
     public void showScene(SceneEntity sceneEntity) throws Exception {
         stage.setScene(sceneEntity.getScene());
+        this.currentScene = sceneEntity;
         stage.show();
+    }
+
+    public void close() {
+        stage.close();
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    public SceneEntity getCurrentScene() {
+        return currentScene;
+    }
+
+    public void setCurrentScene(SceneEntity currentScene) {
+        this.currentScene = currentScene;
     }
 
     public Stage getStage() {
