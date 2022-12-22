@@ -15,4 +15,16 @@ public class DestructibleTile extends Tile {
         this.rewardChance = rewardChance;
         this.health = health;
     }
+
+    @Override
+    public String toString() {
+        return "DestructibleTile{" +
+                "destroyedTexture=" + destroyedTexture +
+                ", rewardChance=" + rewardChance +
+                ", health=" + health +
+                ", texture=" + texture +
+                ", type=" + type +
+                ", isPassable=" + isPassable +
+                '}';
+    }
 }

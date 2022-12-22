@@ -36,4 +36,13 @@ public class Tile {
     public void setPassable(boolean passable) {
         isPassable = passable;
     }
+
+    @Override
+    public String toString() {
+        return "Tile{" +
+                "texture=" + texture +
+                ", type=" + type +
+                ", isPassable=" + isPassable +
+                '}';
+    }
 }

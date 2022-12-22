@@ -72,6 +72,11 @@ public class MainMenuController {
 
     private void mapCreatorButtonOnMouseClick(MouseEvent mouseEvent) {
         System.out.println("Map Creator button clicked!");
+        try {
+            BombermanApplication.stageManager.showScene(SceneEntity.MAP_CREATOR);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void exitButtonOnMouseClick(MouseEvent mouseEvent) {

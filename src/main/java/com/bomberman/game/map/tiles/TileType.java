@@ -6,5 +6,6 @@ public enum TileType {
     BOMB,
     FIRE,
     PLAYER,
-    POWERUP;
+    POWERUP,
+    EXPLOSION;
 }

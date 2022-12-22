@@ -20,6 +20,7 @@ public class StageManager {
         stage.setScene(sceneEntity.getScene());
         this.currentScene = sceneEntity;
         stage.show();
+        stage.setWidth(stage.getWidth());
     }
 
     public void close() {

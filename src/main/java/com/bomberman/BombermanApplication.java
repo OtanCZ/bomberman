@@ -1,6 +1,6 @@
 package com.bomberman;
 
-import com.bomberman.threads.ClientSocket;
+import com.bomberman.game.server.socket.ClientSocket;
 import com.bomberman.view.SceneEntity;
 import com.bomberman.view.StageManager;
 import javafx.application.Application;
@@ -13,6 +13,7 @@ public class BombermanApplication extends Application {
     public void start(Stage stage) throws Exception {
         this.stageManager = new StageManager(stage);
         this.clientThread = new ClientSocket();
+
         stageManager.showScene(SceneEntity.MAIN_MENU);
     }
 
