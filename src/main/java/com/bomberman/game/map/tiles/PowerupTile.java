@@ -6,7 +6,7 @@ import javafx.scene.image.Image;
 public class PowerupTile extends Tile {
     private PowerupType powerupType;
 
-    public PowerupTile(Image texture, TileType type, boolean isPassable, PowerupType powerupType) {
+    public PowerupTile(String texture, TileType type, boolean isPassable, PowerupType powerupType) {
         super(texture, type, isPassable);
         this.powerupType = powerupType;
     }
@@ -23,7 +23,7 @@ public class PowerupTile extends Tile {
     public String toString() {
         return "PowerupTile{" +
                 "powerupType=" + powerupType +
-                ", texture=" + texture +
+                ", texture=" + pathToTexture +
                 ", type=" + type +
                 ", isPassable=" + isPassable +
                 '}';

@@ -41,7 +41,7 @@ public class GameController {
                 for (TileEntity tileEntity[] : tile) {
                     for (TileEntity tileEntity1 : tileEntity) {
                         if (tileEntity1 != null) {
-                            Image tileImage = tileEntity1.getTile().getTexture();
+                            Image tileImage = new Image(BombermanApplication.class.getResource(tileEntity1.getTile().getPathTotexture()).toString());
                             ImageView tileImageView = new ImageView(tileImage);
                             tileImageView.setFitWidth(mapWindow.getWidth() / BombermanApplication.clientThread.currentServer.map.getMap().length);
                             tileImageView.setFitHeight(mapWindow.getHeight() / BombermanApplication.clientThread.currentServer.map.getMap()[0].length);
@@ -61,6 +61,5 @@ public class GameController {
     public void onKeyPress(KeyEvent keyEvent) {
         System.out.println(keyEvent.getCode());
         mapWindow.getGraphicsContext2D().fillRect(0, 0, mapWindow.getWidth(), mapWindow.getHeight());
-        playerWindow.getChildren().add(new ImageView(TileEntity.BRICK.getTile().getTexture()));
     }
 }

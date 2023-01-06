@@ -3,23 +3,23 @@ package com.bomberman.game.map.tiles;
 import javafx.scene.image.Image;
 
 public class PlayerTile extends Tile {
-    Image movingTexture;
+    String pathToMovingTexture;
     int health;
     int maxHealth;
 
-    public PlayerTile(Image texture, TileType type, boolean isPassable, Image movingTexture, int health, int maxHealth) {
+    public PlayerTile(String texture, TileType type, boolean isPassable, String pathToMovingTexture, int health, int maxHealth) {
         super(texture, type, isPassable);
-        this.movingTexture = movingTexture;
+        this.pathToMovingTexture = pathToMovingTexture;
         this.health = health;
         this.maxHealth = maxHealth;
     }
 
-    public Image getMovingTexture() {
-        return movingTexture;
+    public String getMovingTexture() {
+        return pathToMovingTexture;
     }
 
-    public void setMovingTexture(Image movingTexture) {
-        this.movingTexture = movingTexture;
+    public void setMovingTexture(String pathToMovingTexture) {
+        this.pathToMovingTexture = pathToMovingTexture;
     }
 
     public int getHealth() {
@@ -41,10 +41,10 @@ public class PlayerTile extends Tile {
     @Override
     public String toString() {
         return "PlayerTile{" +
-                "movingTexture=" + movingTexture +
+                "movingTexture=" + pathToMovingTexture +
                 ", health=" + health +
                 ", maxHealth=" + maxHealth +
-                ", texture=" + texture +
+                ", texture=" + pathToTexture +
                 ", type=" + type +
                 ", isPassable=" + isPassable +
                 '}';

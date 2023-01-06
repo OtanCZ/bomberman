@@ -3,6 +3,7 @@ package com.bomberman.controllers;
 import com.bomberman.BombermanApplication;
 import com.bomberman.game.player.Player;
 import com.bomberman.game.server.GameState;
+import com.bomberman.game.service.GameService;
 import com.bomberman.view.SceneEntity;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -28,6 +29,7 @@ public class WaitingLobbyController {
 
     @FXML
     public void initialize() {
+        GameService.playerList = playerList;
         System.out.println("WaitingLobbyController initialized!");
         leaveButton.setText("⬅");
         leaveButton.setOnMouseClicked(this::leaveButtonOnMouseClick);
@@ -64,23 +66,7 @@ public class WaitingLobbyController {
     }
 
     private void updateButtonOnMouseClick(MouseEvent mouseEvent) {
-        playerList.getChildren().clear();
-        System.out.println(BombermanApplication.clientThread.currentServer);
-
-        Player firstPlayer = BombermanApplication.clientThread.currentServer.clients.iterator().next();
-        playerTopLeft.getChildren().add(new Text(firstPlayer.toString()));
-        playerList.add(playerTopLeft, 0, 0);
-        playerList.add(playerTopRight, 1, 0);
-        playerList.add(playerBottomLeft, 0, 1);
-        playerList.add(playerBottomRight, 1, 1);
-
-        if(BombermanApplication.clientThread.currentServer.gameState == GameState.INGAME){
-            try {
-                BombermanApplication.stageManager.showScene(SceneEntity.GAME);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
+        BombermanApplication.gameService.updateWaitingLobby();
     }
 
     private void readyButtonOnMouseClick(MouseEvent mouseEvent) {

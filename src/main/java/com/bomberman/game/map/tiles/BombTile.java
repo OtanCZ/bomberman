@@ -2,23 +2,23 @@ package com.bomberman.game.map.tiles;
 import javafx.scene.image.Image;
 
 public class BombTile extends Tile {
-    Image expodingTexture;
+    String pathToExpodingTexture;
     int explosionRange;
     int explosionTime;
 
-    public BombTile(Image texture, TileType type, boolean isPassable, Image expodingTexture, int explosionRange, int explosionTime) {
+    public BombTile(String texture, TileType type, boolean isPassable, String pathToExpodingTexture, int explosionRange, int explosionTime) {
         super(texture, type, isPassable);
-        this.expodingTexture = expodingTexture;
+        this.pathToExpodingTexture = pathToExpodingTexture;
         this.explosionRange = explosionRange;
         this.explosionTime = explosionTime;
     }
 
-    public Image getExpodingTexture() {
-        return expodingTexture;
+    public String getExpodingTexture() {
+        return pathToExpodingTexture;
     }
 
-    public void setExpodingTexture(Image expodingTexture) {
-        this.expodingTexture = expodingTexture;
+    public void setExpodingTexture(String pathToExpodingTexture) {
+        this.pathToExpodingTexture = pathToExpodingTexture;
     }
 
     public int getExplosionRange() {
@@ -40,10 +40,10 @@ public class BombTile extends Tile {
     @Override
     public String toString() {
         return "BombTile{" +
-                "expodingTexture=" + expodingTexture +
+                "expodingTexture=" + pathToExpodingTexture +
                 ", explosionRange=" + explosionRange +
                 ", explosionTime=" + explosionTime +
-                ", texture=" + texture +
+                ", texture=" + pathToTexture +
                 ", type=" + type +
                 ", isPassable=" + isPassable +
                 '}';

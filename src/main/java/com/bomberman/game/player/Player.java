@@ -17,6 +17,9 @@ public class Player implements Serializable {
     private Socket socket;
     private boolean ready;
 
+    public Player() {
+
+    }
     public Player(String name, String color, PlayerTile tile, int bombs, int maxBombs, int bombRange, int moveSpeed, Socket socket) {
         this.name = name;
         this.color = color;
@@ -112,7 +115,7 @@ public class Player implements Serializable {
         this.socket = socket;
     }
 
-    public boolean getReady() {
+    public boolean isReady() {
         return ready;
     }
 

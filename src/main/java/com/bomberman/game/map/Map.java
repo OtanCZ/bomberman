@@ -1,21 +1,26 @@
 package com.bomberman.game.map;
 
+import com.bomberman.BombermanApplication;
 import com.bomberman.game.map.tiles.Tile;
 import com.bomberman.game.map.tiles.TileEntity;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 public class Map implements Serializable {
     private TileEntity[][][] map;
     private int width;
     private int height;
+    private int depth;
     private String name;
 
-    public Map(int width, int height) {
+    public Map(int width, int height, int depth) {
         this.width = width;
         this.height = height;
-        map = new TileEntity[width][height][1];
+        this.depth = depth;
+        map = new TileEntity[width][height][depth];
     }
 
     public Map(String name, int width, int height, int depth){
@@ -80,11 +85,28 @@ public class Map implements Serializable {
         graphicsContext2D.clearRect(0, 0, graphicsContext2D.getCanvas().getWidth(), graphicsContext2D.getCanvas().getHeight());
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                if (map[x][y][0] != null) {
-                    Tile tile = map[x][y][0].getTile();
-                    graphicsContext2D.drawImage(tile.getTexture(), x * (graphicsContext2D.getCanvas().getWidth() / width), y * (graphicsContext2D.getCanvas().getHeight() / height), graphicsContext2D.getCanvas().getWidth() / width, graphicsContext2D.getCanvas().getHeight() / height);
+                for(int z = 0; z < depth; z++) {
+                    if (map[x][y][z] != null) {
+                        Tile tile = map[x][y][z].getTile();
+                        graphicsContext2D.drawImage(new Image(BombermanApplication.class.getResource(tile.getPathTotexture()).toString()), x * (graphicsContext2D.getCanvas().getWidth() / width), y * (graphicsContext2D.getCanvas().getHeight() / height), graphicsContext2D.getCanvas().getWidth() / width, graphicsContext2D.getCanvas().getHeight() / height);
+                    }
                 }
             }
         }
+    }
+
+    public int getDepth() {
+        return depth;
+    }
+
+    @Override
+    public String toString() {
+        return "Map{" +
+                "map=" + Arrays.toString(map) +
+                ", width=" + width +
+                ", height=" + height +
+                ", depth=" + depth +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

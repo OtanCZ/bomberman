@@ -5,6 +5,7 @@ import com.bomberman.controllers.ServerListController;
 import com.bomberman.game.server.ServerEntity;
 import com.bomberman.game.server.socket.ClientSocket;
 import com.bomberman.view.SceneEntity;
+import javafx.application.Platform;
 
 import java.io.IOException;
 
@@ -24,16 +25,25 @@ public class ClientThread extends Thread {
                     case "Discovered" -> {
                         clientSocket.servers.add((ServerEntity) clientSocket.ois.readObject());
                         System.out.println(clientSocket.servers);
+                        Platform.runLater(() -> {
+                            BombermanApplication.gameService.refreshServerList();
+                        });
                     }
 
                     case "Joined" -> {
                         clientSocket.currentServer = (ServerEntity) clientSocket.ois.readObject();
                         System.out.println(clientSocket.currentServer);
+                        Platform.runLater(() -> {
+                            BombermanApplication.gameService.updateWaitingLobby();
+                        });
                     }
 
                     case "Update" -> {
                         clientSocket.currentServer = (ServerEntity) clientSocket.ois.readObject();
                         System.out.println(clientSocket.currentServer);
+                        Platform.runLater(() -> {
+                            BombermanApplication.gameService.updateWaitingLobby();
+                        });
                     }
 
                     case "Left" -> {

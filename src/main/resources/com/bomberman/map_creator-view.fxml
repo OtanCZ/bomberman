@@ -6,7 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane fx:id="mapCreatorPane" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.bomberman.controllers.MapCreatorController">
+<BorderPane fx:id="mapCreatorPane" onKeyPressed="#onKeyPress"  xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.bomberman.controllers.MapCreatorController">
     <children>
     </children>
 </BorderPane>

@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ServerEntity implements Serializable {
+
     public String name;
     public String ip;
     public int port;
@@ -18,7 +19,7 @@ public class ServerEntity implements Serializable {
     public Map map;
     public String version;
 
-
+    public ServerEntity() {}
     public ServerEntity(String name, String ip, int port, int players, Collection<Player> clients, GameState gameState, int maxPlayers, Map map, String version) {
         this.name = name;
         this.ip = ip;

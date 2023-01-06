@@ -49,7 +49,7 @@ public class ServerThread extends Thread {
                     }
 
                     case "Ready" -> {
-                        if(server.clients.get(client.getInetAddress().toString()).getReady()){
+                        if(server.clients.get(client.getInetAddress().toString()).isReady()){
                             System.out.println("Client " + client.getInetAddress().toString() + " is not ready.");
                             server.clients.get(client.getInetAddress().toString()).setReady(false);
                         } else {
@@ -57,9 +57,12 @@ public class ServerThread extends Thread {
                             System.out.println("Client " + client.getInetAddress().toString() + " is ready.");
                         }
                         oos.writeObject("Update");
+                        ServerEntity se = new ServerEntity(server.name, server.ip, server.port, server.players, server.clients.values().stream().toList(), server.gameState, server.maxPlayers, server.map, server.version);
+                        se.clients.iterator().next().setReady(true);
+                        oos.writeObject(se);
+
                         System.out.println(server);
-                        oos.writeObject(new ServerEntity(server.name, server.ip, server.port, server.players, server.clients.values().stream().toList(), server.gameState, server.maxPlayers, server.map, server.version));
-                        System.out.println(server);
+                        System.out.println(se);
                         oos.flush();
                     }
 

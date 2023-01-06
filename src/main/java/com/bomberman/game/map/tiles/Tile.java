@@ -2,23 +2,25 @@ package com.bomberman.game.map.tiles;
 
 import javafx.scene.image.Image;
 
-public class Tile {
-    Image texture;
+import java.io.Serializable;
+
+public class Tile implements Serializable {
+    String pathToTexture;
     TileType type;
     boolean isPassable;
 
-    public Tile(Image texture, TileType type, boolean isPassable) {
-        this.texture = texture;
+    public Tile(String pathToTexture, TileType type, boolean isPassable) {
+        this.pathToTexture = pathToTexture;
         this.type = type;
         this.isPassable = isPassable;
     }
 
-    public Image getTexture() {
-        return texture;
+    public String getPathTotexture() {
+        return pathToTexture;
     }
 
-    public void setTexture(Image texture) {
-        this.texture = texture;
+    public void setPathTotexture(String pathTotexture) {
+        this.pathToTexture = pathTotexture;
     }
 
     public TileType getType() {
@@ -40,7 +42,7 @@ public class Tile {
     @Override
     public String toString() {
         return "Tile{" +
-                "texture=" + texture +
+                "texture=" + pathToTexture +
                 ", type=" + type +
                 ", isPassable=" + isPassable +
                 '}';

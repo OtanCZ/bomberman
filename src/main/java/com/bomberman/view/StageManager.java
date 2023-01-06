@@ -21,6 +21,7 @@ public class StageManager {
         this.currentScene = sceneEntity;
         stage.show();
         stage.setWidth(stage.getWidth());
+        System.out.println("Switched scene to " + sceneEntity.name());
     }
 
     public void close() {

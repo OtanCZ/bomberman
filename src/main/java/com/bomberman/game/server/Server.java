@@ -3,11 +3,9 @@ package com.bomberman.game.server;
 import com.bomberman.game.map.Map;
 import com.bomberman.game.player.Player;
 import com.bomberman.game.server.thread.ClientAcceptThread;
-import com.bomberman.game.server.thread.ServerThread;
 
 import java.io.*;
 import java.net.*;
-import java.util.Enumeration;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Server {
@@ -44,7 +42,7 @@ public class Server {
         this.clients = new ConcurrentHashMap<>();
         this.players = this.clients.size();
         this.gameState = GameState.LOBBY;
-        this.map = new Map(10, 10);
+        this.map = new Map(10, 10, 5);
         this.version = "0.0.1";
         this.maxPlayers = 4;
     }
@@ -57,7 +55,7 @@ public class Server {
             while(gameState == GameState.LOBBY) {
                 int playersReady = 0;
                 for(Player player : clients.values()) {
-                    if(player.getReady()){
+                    if(player.isReady()){
                         playersReady++;
                     }
                 }

@@ -3,14 +3,14 @@ package com.bomberman.game.map.tiles;
 import javafx.scene.image.Image;
 
 public class DestructibleTile extends Tile {
-    Image destroyedTexture;
+    String pathToDestroyedTexture;
     //TileEntity[] destroyRewards;
     int rewardChance;
     int health;
 
-    public DestructibleTile(Image texture, TileType type, boolean isPassable, Image destroyedTexture, /*TileEntity[] destroyRewards,*/ int rewardChance, int health) {
-        super(texture, type, isPassable);
-        this.destroyedTexture = destroyedTexture;
+    public DestructibleTile(String pathToTexture, TileType type, boolean isPassable, String pathToDestroyedTexture, /*TileEntity[] destroyRewards,*/ int rewardChance, int health) {
+        super(pathToTexture, type, isPassable);
+        this.pathToDestroyedTexture = pathToDestroyedTexture;
         //this.destroyRewards = destroyRewards;
         this.rewardChance = rewardChance;
         this.health = health;
@@ -19,10 +19,10 @@ public class DestructibleTile extends Tile {
     @Override
     public String toString() {
         return "DestructibleTile{" +
-                "destroyedTexture=" + destroyedTexture +
+                "destroyedTexture=" + pathToDestroyedTexture +
                 ", rewardChance=" + rewardChance +
                 ", health=" + health +
-                ", texture=" + texture +
+                ", texture=" + pathToTexture +
                 ", type=" + type +
                 ", isPassable=" + isPassable +
                 '}';
