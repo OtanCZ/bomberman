@@ -3,14 +3,16 @@ package com.bomberman.game.server;
 import com.bomberman.game.map.Map;
 import com.bomberman.game.player.Player;
 import com.bomberman.game.server.thread.ClientAcceptThread;
+import com.bomberman.game.service.GameService;
 
 import java.io.*;
 import java.net.*;
+import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Server {
     public ServerSocket socket;
-    public ConcurrentHashMap<String, Player> clients;
+    public HashMap<String, Player> clients;
     public String name;
     public String ip;
     public InetAddress broadcast;
@@ -21,7 +23,7 @@ public class Server {
     public String version;
     public GameState gameState;
 
-    public Server(ServerSocket socket, ConcurrentHashMap<String, Player> clients, String name, String ip, InetAddress broadcast, int port, int players, int maxPlayers, Map map, String version) {
+    public Server(ServerSocket socket, HashMap<String, Player> clients, String name, String ip, InetAddress broadcast, int port, int players, int maxPlayers, Map map, String version) {
         this.socket = socket;
         this.clients = clients;
         this.name = name;
@@ -39,52 +41,87 @@ public class Server {
         this.name = "Bomberman Server";
         this.ip = "localhost";
         this.socket = new ServerSocket(port);
-        this.clients = new ConcurrentHashMap<>();
+        this.clients = new HashMap<>();
         this.players = this.clients.size();
         this.gameState = GameState.LOBBY;
-        this.map = new Map(10, 10, 5);
+        this.map = GameService.loadMaps().get(0);
         this.version = "0.0.1";
         this.maxPlayers = 4;
     }
 
-    public void start() {
+    public void start() throws InterruptedException {
         ClientAcceptThread clientAcceptThread = new ClientAcceptThread(this);
         clientAcceptThread.start();
 
         while(true){
-            while(gameState == GameState.LOBBY) {
-                int playersReady = 0;
-                for(Player player : clients.values()) {
-                    if(player.isReady()){
-                        playersReady++;
-                    }
-                }
-                if(playersReady >= players && playersReady >= 1){
-                    System.out.println("All players ready, switching to game.");
+            while(gameState == GameState.LOBBY){
+                if(allPlayersReady()){
                     gameState = GameState.INGAME;
                 }
+                Thread.sleep(1000);
             }
-            try {
-                Thread.sleep(50);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+
+            System.out.println("All players ready, switching to game.");
+            sendToAllClients("GameStart");
+            updateAllClients();
+
+            while (gameState == GameState.INGAME){
+                Thread.sleep(5000);
+                gameState = GameState.ENDGAME;
             }
+
+            sendToAllClients("GameEnd");
+
+            while(gameState == GameState.ENDGAME) {
+                Thread.sleep(5000);
+                gameState = GameState.LOBBY;
+            }
+
+            sendToAllClients("WaitingLobby");
+            updateAllClients();
         }
     }
 
-    /*
-    public void updateAllClients() {
+    public boolean allPlayersReady(){
+        int playersReady = 0;
+        for(Player player : clients.values()) {
+            if(player.isReady()){
+                playersReady++;
+            }
+        }
+        if(playersReady >= players && playersReady >= 1){
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public void sendToAllClients(Object object) {
         for(String c : clients.keySet()){
             try {
-                ObjectOutputStream oos = new ObjectOutputStream(clients.get(c).getOutputStream());
-                oos.writeObject(new ServerEntity(this.name, this.ip, this.port, this.players, this.maxPlayers, this.map, this.version));
+                ObjectOutputStream oos = new ObjectOutputStream(clients.get(c).getSocket().getOutputStream());
+                oos.writeObject(object);
+                oos.flush();
+                oos.reset();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
-     */
+    public void updateAllClients() {
+        for(String c : clients.keySet()){
+            try {
+                ObjectOutputStream oos = new ObjectOutputStream(clients.get(c).getSocket().getOutputStream());
+                ServerEntity se = new ServerEntity(this.name, this.ip, this.port, this.players, this.clients.values().stream().toList(), this.gameState, this.maxPlayers, this.map, this.version);
+                oos.writeObject("Update");
+                oos.writeObject(se);
+                oos.flush();
+                oos.reset();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     public void startDiscoverServer() throws IOException {
         ServerSocket socket = new ServerSocket();

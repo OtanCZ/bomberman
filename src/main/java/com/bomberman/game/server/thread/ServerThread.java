@@ -36,7 +36,8 @@ public class ServerThread extends Thread {
                     }
 
                     case "Join" -> {
-                        Player player = (Player) ois.readObject();
+                        String name = (String) ois.readObject();
+                        Player player = new Player(name, "#000000");
                         System.out.println("Client " + client.getInetAddress().toString() + " (" + player.getName() + ") " + "joined server.");
                         server.clients.put(client.getInetAddress().toString(), player);
                         server.players = server.clients.size();
@@ -58,9 +59,7 @@ public class ServerThread extends Thread {
                         }
                         oos.writeObject("Update");
                         ServerEntity se = new ServerEntity(server.name, server.ip, server.port, server.players, server.clients.values().stream().toList(), server.gameState, server.maxPlayers, server.map, server.version);
-                        se.clients.iterator().next().setReady(true);
                         oos.writeObject(se);
-
                         System.out.println(server);
                         System.out.println(se);
                         oos.flush();
@@ -73,6 +72,7 @@ public class ServerThread extends Thread {
 
                     default -> System.out.println("Unknown request: " + request);
                 }
+                oos.reset();
             } catch (IOException e) {
                 System.out.println("Client " + client.getInetAddress().toString() + " probably disconnected.");
                 server.clients.remove(client.getInetAddress().toString());

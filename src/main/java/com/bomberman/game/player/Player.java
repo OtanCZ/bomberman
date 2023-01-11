@@ -49,6 +49,12 @@ public class Player implements Serializable {
     public Player(String name, String color) {
         this.name = name;
         this.color = color;
+        this.tile = null;
+        this.bombs = 0;
+        this.maxBombs = 1;
+        this.bombRange = 1;
+        this.moveSpeed = 10;
+        this.ready = false;
     }
 
     public String getName() {

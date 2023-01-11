@@ -5,6 +5,7 @@ import com.bomberman.game.map.Map;
 import com.bomberman.game.player.Player;
 import com.bomberman.game.server.ServerEntity;
 import com.bomberman.game.server.thread.ClientThread;
+import com.bomberman.game.service.GameService;
 import com.bomberman.view.SceneEntity;
 import javafx.scene.paint.Color;
 
@@ -26,40 +27,10 @@ public class ClientSocket {
         this.servers = new ArrayList<>();
         this.oos = new ObjectOutputStream(socket.getOutputStream());
         this.ois = new ObjectInputStream(socket.getInputStream());
-        this.maps = loadMaps();
+        this.maps = GameService.loadMaps();
 
         ClientThread clientThread = new ClientThread(this);
         clientThread.start();
-    }
-
-    private List<Map> loadMaps() {
-        List<Map> maps = new ArrayList<>();
-        try {
-            if(BombermanApplication.class.getResource("maps/") != null){
-                File defaultMapsFolder = new File(BombermanApplication.class.getResource("maps/").getFile());
-                File[] mapsFiles = defaultMapsFolder.listFiles();
-                for (File mapFile : mapsFiles) {
-                    FileInputStream fileInputStream = new FileInputStream(mapFile);
-                    ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-                    Map map = (Map) objectInputStream.readObject();
-                    maps.add(map);
-                }
-            }
-
-            File customMapsFolder = new File(System.getProperty("user.home") + "/.bomberman/maps/");
-            File[] customMapsFiles = customMapsFolder.listFiles();
-            for (File customMapFile : customMapsFiles) {
-                FileInputStream fileInputStream = new FileInputStream(customMapFile);
-                ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-                Map map = (Map) objectInputStream.readObject();
-                maps.add(map);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        return maps;
     }
 
     public ClientSocket(String host, int port) throws IOException {
@@ -74,14 +45,14 @@ public class ClientSocket {
         servers.clear();
         oos.writeObject("Discover");
         oos.flush();
+        oos.reset();
     }
 
     public void connectToServer(String ip, int port) throws Exception {
         System.out.println("Sending join request to " + ip + ":" + port + ".");
         oos.writeObject("Join");
-        Player pl = new Player("Test", "#000000");
-        oos.writeObject(pl);
-        oos.flush();
+        oos.writeObject("Test");
+        oos.reset();
     }
 
     public List<ServerEntity> getServers() {
@@ -108,6 +79,7 @@ public class ClientSocket {
             try {
                 oos.writeObject("Leave");
                 oos.flush();
+                oos.reset();
                 Thread.sleep(100);
                 if(currentServer == null){
                     System.out.println("Left server.");
@@ -142,7 +114,8 @@ public class ClientSocket {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        this.maps = loadMaps();
+
+        this.maps = GameService.loadMaps();
     }
 
     public Map getMap(String value) {

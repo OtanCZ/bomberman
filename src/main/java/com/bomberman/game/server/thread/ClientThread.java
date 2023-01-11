@@ -42,7 +42,18 @@ public class ClientThread extends Thread {
                         clientSocket.currentServer = (ServerEntity) clientSocket.ois.readObject();
                         System.out.println(clientSocket.currentServer);
                         Platform.runLater(() -> {
-                            BombermanApplication.gameService.updateWaitingLobby();
+                            switch (BombermanApplication.stageManager.getCurrentScene()){
+                                case WAITING_LOBBY -> BombermanApplication.gameService.updateWaitingLobby();
+                                case GAME -> BombermanApplication.gameService.updateGame();
+                                default -> {}
+                            }
+                        });
+                    }
+
+                    case "GameStart" -> {
+                        System.out.println("Server started the game!");
+                        Platform.runLater(() -> {
+                            BombermanApplication.stageManager.setCurrentScene(SceneEntity.GAME);
                         });
                     }
 

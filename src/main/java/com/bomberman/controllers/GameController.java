@@ -3,6 +3,7 @@ package com.bomberman.controllers;
 import com.bomberman.BombermanApplication;
 import com.bomberman.game.map.tiles.TileEntity;
 import com.bomberman.game.server.GameState;
+import com.bomberman.game.service.GameService;
 import com.bomberman.view.SceneEntity;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
@@ -20,6 +21,7 @@ public class GameController {
 
     @FXML
     public void initialize() throws InterruptedException {
+        GameService.gameWindow = gameWindow;
         System.out.println("GameController initialized!");
         gameWindow.setLeft(playerWindow);
         gameWindow.setCenter(mapWindow);
@@ -35,23 +37,6 @@ public class GameController {
             statsWindow.setPrefHeight(gameWindow.getHeight());
             playerWindow.setPrefHeight(gameWindow.getHeight());
         });
-
-        while(BombermanApplication.clientThread.currentServer.gameState == GameState.INGAME){
-            for (TileEntity tile[][] : BombermanApplication.clientThread.currentServer.map.getMap()) {
-                for (TileEntity tileEntity[] : tile) {
-                    for (TileEntity tileEntity1 : tileEntity) {
-                        if (tileEntity1 != null) {
-                            Image tileImage = new Image(BombermanApplication.class.getResource(tileEntity1.getTile().getPathTotexture()).toString());
-                            ImageView tileImageView = new ImageView(tileImage);
-                            tileImageView.setFitWidth(mapWindow.getWidth() / BombermanApplication.clientThread.currentServer.map.getMap().length);
-                            tileImageView.setFitHeight(mapWindow.getHeight() / BombermanApplication.clientThread.currentServer.map.getMap()[0].length);
-                            mapWindow.getGraphicsContext2D().drawImage(tileImageView.getImage(), tileImageView.getFitWidth(), tileImageView.getFitHeight(), tileImageView.getFitWidth(), tileImageView.getFitHeight());
-                        }
-                    }
-                }
-            }
-            Thread.sleep(1000);
-        }
     }
 
     public void mainMenuButtonOnMouseClick(MouseEvent mouseEvent) throws Exception {
