@@ -12,20 +12,18 @@ public class ServerEntity implements Serializable {
     public String name;
     public String ip;
     public int port;
-    public int players;
-    public Collection<Player> clients;
+    public Collection<Player> players;
     public GameState gameState;
     public int maxPlayers;
     public Map map;
     public String version;
 
     public ServerEntity() {}
-    public ServerEntity(String name, String ip, int port, int players, Collection<Player> clients, GameState gameState, int maxPlayers, Map map, String version) {
+    public ServerEntity(String name, String ip, int port, Collection<Player> players, GameState gameState, int maxPlayers, Map map, String version) {
         this.name = name;
         this.ip = ip;
         this.port = port;
         this.players = players;
-        this.clients = clients;
         this.gameState = gameState;
         this.maxPlayers = maxPlayers;
         this.map = map;
@@ -39,7 +37,6 @@ public class ServerEntity implements Serializable {
                 ", ip='" + ip + '\'' +
                 ", port=" + port +
                 ", players=" + players +
-                ", clients=" + clients +
                 ", gameState=" + gameState +
                 ", maxPlayers=" + maxPlayers +
                 ", map=" + map +
@@ -71,11 +68,11 @@ public class ServerEntity implements Serializable {
         this.port = port;
     }
 
-    public int getPlayers() {
+    public Collection<Player> getPlayers() {
         return players;
     }
 
-    public void setPlayers(int players) {
+    public void setPlayers(Collection<Player> players) {
         this.players = players;
     }
 

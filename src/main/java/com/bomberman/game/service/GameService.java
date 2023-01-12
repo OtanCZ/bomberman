@@ -31,8 +31,8 @@ public class GameService {
         System.out.println(playerList.getChildren().size());
         playerList.getChildren().clear();
 
-        BombermanApplication.clientThread.currentServer.clients.forEach((client) -> {
-            playerList.add(new Text(client.toString()), 0, 0);
+        BombermanApplication.clientThread.currentServer.players.forEach((player) -> {
+            playerList.add(new Text(player.toString()), 0, 0);
         });
     }
 

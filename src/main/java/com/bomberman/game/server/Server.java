@@ -1,8 +1,11 @@
 package com.bomberman.game.server;
 
 import com.bomberman.game.map.Map;
+import com.bomberman.game.map.tiles.PlayerTile;
+import com.bomberman.game.map.tiles.TileEntity;
 import com.bomberman.game.player.Player;
 import com.bomberman.game.server.thread.ClientAcceptThread;
+import com.bomberman.game.server.thread.ServerThread;
 import com.bomberman.game.service.GameService;
 
 import java.io.*;
@@ -12,29 +15,16 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Server {
     public ServerSocket socket;
-    public HashMap<String, Player> clients;
+    public HashMap<String, Player> players;
     public String name;
     public String ip;
     public InetAddress broadcast;
     public int port;
-    public int players;
+    public HashMap<String, ServerThread> clients;
     public int maxPlayers;
     public Map map;
     public String version;
     public GameState gameState;
-
-    public Server(ServerSocket socket, HashMap<String, Player> clients, String name, String ip, InetAddress broadcast, int port, int players, int maxPlayers, Map map, String version) {
-        this.socket = socket;
-        this.clients = clients;
-        this.name = name;
-        this.ip = ip;
-        this.broadcast = broadcast;
-        this.port = port;
-        this.players = players;
-        this.maxPlayers = maxPlayers;
-        this.map = map;
-        this.version = version;
-    }
 
     public Server(int port) throws IOException {
         this.port = port;
@@ -42,7 +32,7 @@ public class Server {
         this.ip = "localhost";
         this.socket = new ServerSocket(port);
         this.clients = new HashMap<>();
-        this.players = this.clients.size();
+        this.players = new HashMap<>();
         this.gameState = GameState.LOBBY;
         this.map = GameService.loadMaps().get(0);
         this.version = "0.0.1";
@@ -66,10 +56,25 @@ public class Server {
             updateAllClients();
 
             while (gameState == GameState.INGAME){
-                Thread.sleep(5000);
-                gameState = GameState.ENDGAME;
+                for (Player player : players.values()) {
+                    player.setTile(map.findNotTakenPlayerTile());
+                }
+
+                boolean clean = false;
+                while (!clean){
+                    PlayerTile tile = map.findNotTakenPlayerTile();
+                    System.out.println(tile);
+                    if(map.findNotTakenPlayerTile() != null){
+                        map.deleteTile(tile);
+                    } else {
+                        clean = true;
+                    }
+                }
+
+
             }
 
+            System.out.println("Game ended.");
             sendToAllClients("GameEnd");
 
             while(gameState == GameState.ENDGAME) {
@@ -77,6 +82,11 @@ public class Server {
                 gameState = GameState.LOBBY;
             }
 
+            for(Player p : players.values()){
+                p.setReady(false);
+            }
+
+            System.out.println("Waiting lobby.");
             sendToAllClients("WaitingLobby");
             updateAllClients();
         }
@@ -84,47 +94,30 @@ public class Server {
 
     public boolean allPlayersReady(){
         int playersReady = 0;
-        for(Player player : clients.values()) {
+        for(Player player : players.values()) {
             if(player.isReady()){
                 playersReady++;
             }
         }
-        if(playersReady >= players && playersReady >= 1){
+        if(playersReady >= players.size() && playersReady >= 1){
             return true;
         } else {
             return false;
         }
     }
     public void sendToAllClients(Object object) {
-        for(String c : clients.keySet()){
-            try {
-                ObjectOutputStream oos = new ObjectOutputStream(clients.get(c).getSocket().getOutputStream());
-                oos.writeObject(object);
-                oos.flush();
-                oos.reset();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        for(ServerThread st : clients.values()){
+            st.send(object);
         }
     }
 
     public void updateAllClients() {
-        for(String c : clients.keySet()){
-            try {
-                ObjectOutputStream oos = new ObjectOutputStream(clients.get(c).getSocket().getOutputStream());
-                ServerEntity se = new ServerEntity(this.name, this.ip, this.port, this.players, this.clients.values().stream().toList(), this.gameState, this.maxPlayers, this.map, this.version);
-                oos.writeObject("Update");
-                oos.writeObject(se);
-                oos.flush();
-                oos.reset();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+        ServerEntity se = new ServerEntity(this.name, this.ip, this.port, this.players.values().stream().toList(), this.gameState, this.maxPlayers, this.map, this.version);
 
-    public void startDiscoverServer() throws IOException {
-        ServerSocket socket = new ServerSocket();
+        for(ServerThread st : clients.values()){
+                st.send("Update");
+                st.send(se);
+        }
     }
 
     public String getName() {
@@ -151,11 +144,11 @@ public class Server {
         this.port = port;
     }
 
-    public int getPlayers() {
+    public HashMap<String, Player> getPlayers() {
         return players;
     }
 
-    public void setPlayers(int players) {
+    public void setPlayers(HashMap<String, Player> players) {
         this.players = players;
     }
 

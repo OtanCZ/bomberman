@@ -6,12 +6,14 @@ public class PlayerTile extends Tile {
     String pathToMovingTexture;
     int health;
     int maxHealth;
+    boolean taken;
 
     public PlayerTile(String texture, TileType type, boolean isPassable, String pathToMovingTexture, int health, int maxHealth) {
         super(texture, type, isPassable);
         this.pathToMovingTexture = pathToMovingTexture;
         this.health = health;
         this.maxHealth = maxHealth;
+        this.taken = false;
     }
 
     public String getMovingTexture() {
@@ -20,6 +22,22 @@ public class PlayerTile extends Tile {
 
     public void setMovingTexture(String pathToMovingTexture) {
         this.pathToMovingTexture = pathToMovingTexture;
+    }
+
+    public String getPathToMovingTexture() {
+        return pathToMovingTexture;
+    }
+
+    public void setPathToMovingTexture(String pathToMovingTexture) {
+        this.pathToMovingTexture = pathToMovingTexture;
+    }
+
+    public boolean isTaken() {
+        return taken;
+    }
+
+    public void setTaken(boolean taken) {
+        this.taken = taken;
     }
 
     public int getHealth() {

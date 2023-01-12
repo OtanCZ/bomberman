@@ -130,7 +130,7 @@ public class MapCreatorController {
         if (selectedTile != null && map != null) {
             int x = (int) (mouseEvent.getX() / (mapWindow.getWidth() / map.getWidth()));
             int y = (int) (mouseEvent.getY() / (mapWindow.getHeight() / map.getHeight()));
-            map.setTile(x, y, Integer.parseInt(mapDepthSelectField.getText()), selectedTile);
+            map.setTile(x, y, Integer.parseInt(mapDepthSelectField.getText()), selectedTile.getTile());
             System.out.println("x: " + x + " y: " + y + " z: " + Integer.parseInt(mapDepthSelectField.getText()));
             map.draw(mapWindow.getGraphicsContext2D());
         } else {

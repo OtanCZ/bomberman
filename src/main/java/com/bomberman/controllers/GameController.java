@@ -21,11 +21,11 @@ public class GameController {
 
     @FXML
     public void initialize() throws InterruptedException {
-        GameService.gameWindow = gameWindow;
         System.out.println("GameController initialized!");
         gameWindow.setLeft(playerWindow);
         gameWindow.setCenter(mapWindow);
         gameWindow.setRight(statsWindow);
+        GameService.gameWindow = gameWindow;
 
         gameWindow.widthProperty().addListener((observable, oldValue, newValue) -> {
             mapWindow.setWidth(gameWindow.getWidth() * 0.8);

@@ -53,7 +53,32 @@ public class ClientThread extends Thread {
                     case "GameStart" -> {
                         System.out.println("Server started the game!");
                         Platform.runLater(() -> {
-                            BombermanApplication.stageManager.setCurrentScene(SceneEntity.GAME);
+                            try {
+                                BombermanApplication.stageManager.showScene(SceneEntity.GAME);
+                            } catch (Exception e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+                    }
+
+                    case "GameEnd" -> {
+                        Platform.runLater(() -> {
+                            try {
+                                //TODO: Make end screen scene, this is temporary.
+                                BombermanApplication.stageManager.showScene(SceneEntity.MAIN_MENU);
+                            } catch (Exception e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+                    }
+
+                    case "WaitingLobby" -> {
+                        Platform.runLater(() -> {
+                            try {
+                                BombermanApplication.stageManager.showScene(SceneEntity.WAITING_LOBBY);
+                            } catch (Exception e) {
+                                throw new RuntimeException(e);
+                            }
                         });
                     }
 

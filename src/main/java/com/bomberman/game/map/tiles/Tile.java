@@ -8,11 +8,55 @@ public class Tile implements Serializable {
     String pathToTexture;
     TileType type;
     boolean isPassable;
+    int x;
+    int y;
+    int z;
 
     public Tile(String pathToTexture, TileType type, boolean isPassable) {
         this.pathToTexture = pathToTexture;
         this.type = type;
         this.isPassable = isPassable;
+    }
+
+    public Tile(String pathToTexture, TileType type, boolean isPassable, int x, int y, int z) {
+        this.pathToTexture = pathToTexture;
+        this.type = type;
+        this.isPassable = isPassable;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+
+    public String getPathToTexture() {
+        return pathToTexture;
+    }
+
+    public void setPathToTexture(String pathToTexture) {
+        this.pathToTexture = pathToTexture;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public int getZ() {
+        return z;
+    }
+
+    public void setZ(int z) {
+        this.z = z;
     }
 
     public String getPathTotexture() {

@@ -18,7 +18,6 @@ public class ClientAcceptThread extends Thread {
                 Socket client = server.socket.accept();
                 ServerThread serverThread = new ServerThread(client, this.server);
                 serverThread.run();
-                server.clients.put(client.getInetAddress().toString(), client);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

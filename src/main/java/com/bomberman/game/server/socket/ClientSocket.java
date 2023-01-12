@@ -7,6 +7,7 @@ import com.bomberman.game.server.ServerEntity;
 import com.bomberman.game.server.thread.ClientThread;
 import com.bomberman.game.service.GameService;
 import com.bomberman.view.SceneEntity;
+import javafx.application.Platform;
 import javafx.scene.paint.Color;
 
 import java.io.*;
@@ -80,16 +81,17 @@ public class ClientSocket {
                 oos.writeObject("Leave");
                 oos.flush();
                 oos.reset();
-                Thread.sleep(100);
-                if(currentServer == null){
-                    System.out.println("Left server.");
-                    BombermanApplication.clientThread.currentServer = null;
-                    BombermanApplication.stageManager.showScene(SceneEntity.SERVER_LIST);
-                }
+                System.out.println("Left server.");
+                BombermanApplication.clientThread.currentServer = null;
+                Platform.runLater(() -> {
+                    try {
+                        BombermanApplication.stageManager.showScene(SceneEntity.SERVER_LIST);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                });
             } catch (IOException e) {
                 e.printStackTrace();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
